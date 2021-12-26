@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Заявление</th>
+      <td id="status"></td>
+    </tr>
+  </thead>
+  <tr><td colspan="2">
+    <table class="table table-bordered mb-0">
+      <thead>
+      <tr>
+        <th scope="col" colspan="8">Личные данные</th>
+      </tr>
+      <tr>
+        <td colspan="8" class="noteCell"></td>
+      </tr>
+      </thead>
+      <tr>
+        <th scope="row">Фамилия</th>
+        <td id="first_name"></td>
+
+        <th scope="row">Имя</th>
+        <td id="last_name"></td>
+
+        <th scope="row">Отчество</th>
+        <td id="patronym"></td>
+
+        <th scope="row">Пол</th>
+        <td id="sex"></td>
+      </tr>
+      <tr>
+        <th scope="row" colspan="2">Адрес электронной почты</th>
+        <td id="email" colspan="2"></td>
+        <th scope="row" colspan="2">Номер телефона</th>
+        <td id=phone_number colspan="2"></td>
+      </tr>
+      <tr>
+        <th scope="row" colspan="2">Дата рождения</th>
+        <td id="birth_date" colspan="2"></td>
+        <th scope="row" colspan="2">Место рождения</th>
+        <td id="birth_place" colspan="2"><s/td>
+      </tr>
+    </table>
+  </td></tr>
+  <tr><td colspan="2">
+    <table class="table table-bordered mb-0">
+      <thead>
+      <tr>
+        <th scope="col" colspan="4">Паспортные данные</th>
+      </tr>
+      <tr>
+        <td colspan="8" class="noteCell"></td>
+      </tr>
+      </thead>
+      <tr>
+        <th scope="row">Серия</th>
+        <td id="series"></td>
+        <th scope="row">Номер</th>
+        <td id="number"></td>
+      </tr>
+      <tr>
+        <th scope="row">Когда выдан</th>
+        <td id="issue_date"></td>
+        <th scope="row">Кем выдан</th>
+        <td id="issue_organ"></td>
+      </tr>
+    </table>
+  </td></tr>
+  <tr><td colspan="2">
+    <table class="table table-bordered mb-0" 
+           id="permanent_registration">
+      <thead>
+      <tr>
+        <th scope="col" colspan="4">Прописка</th>
+      </tr>
+      <tr>
+        <td colspan="8" class="noteCell"></td>
+      </tr>
+      </thead>
+      <tr>
+        <th scope="row">Адрес</th>
+        <td id="address" colspan="3"></td>
+      </tr>
+      <tr>
+        <th scope="row">Дата регистрации</th>
+        <td id="registration_date"></td>
+        <th scope="row">Орган регистрации</th>
+        <td id="registration_organ"></td>
+      </tr>
+    </table>
+  </td></tr>
+  <tr><td colspan="2">
+    <table class="table table-bordered mb-0" 
+           id="temporary_registration">
+      <thead>
+      <tr>
+        <th scope="col" colspan="4">Временная регистрация</th>
+      </tr>
+      <tr>
+        <td colspan="8" class="noteCell"></td>
+      </tr>
+      </thead>
+      <tr>
+        <th scope="row">Адрес</th>
+        <td id="address" colspan="3"></td>
+      </tr>
+      <tr>
+        <th scope="row">Дата начала регистрации</th>
+        <td id="start_date"></td>
+        <th scope="row">Дата окончания регистрации</th>
+        <td id="end_date"></td>
+      <tr>
+      </tr>
+        <th scope="row">Орган регистрации</th>
+        <td id="registration_organ"></td>
+      </tr>
+    </table>
+  </td></tr>
+  <tr><td colspan="2">
+    <table class="table table-bordered mb-0">
+      <thead>
+      <tr>
+        <th scope="col" colspan="2">Заявление</th>
+      </tr>
+      <tr>
+        <td colspan="8" class="noteCell"></td>
+      </tr>
+      </thead>
+      <tr>
+        <th scope="row">Дата подачи</th>
+        <td id="application_date"></td>
+      <tr>
+      <tr>
+        <th scope="row">Получение паспорта</th>
+        <td id="reason"></td>
+      </tr>
+      <tr>
+        <th scope="row">
+          Подтведждаю, что не прохожу срочную службу в армии
+        </th>
+        <td id="reason">&#10003;</td>
+      </tr>
+      <tr>
+        <th scope="row">
+          Подтведждаю, что не прохожу службу в армии по контракту
+        </th>
+        <td id="reason">&#10003;</td>
+      </tr>
+      <tr>
+        <th scope="row">
+          Подтведждаю, что не отбываю наказание или меру пресечения,
+          предусматривающие ограничение в выезде за рубеж
+        </th>
+        <td id="reason">&#10003;</td>
+      </tr>
+      <tr>
+        <th scope="row">
+          Подтведждаю, что не обладаю доступом к сведениям, 
+          являющимися государственной тайной, 
+          доступ к которой<br>ограничивает выезд за рубеж
+        </th>
+        <td id="reason">&#10003;</td>
+      </tr>
+      <tr>
+        <th scope="row">
+          Подтведждаю, что не имею невыполненных долговых обязательств
+        </th>
+        <td id="reason">&#10003;</td>
+      </tr>
+      <tr>
+        <th scope="row">
+          Подтведждаю, что в течение последних 5 лет не был признан банкротом
+        </th>
+        <td id="reason">&#10003;</td>
+      </tr>
+    </table>
+  </td></tr>
+  <tr><td colspan="2">
+    <table class="table table-bordered mb-0" id="workplaceTable">
+      <thead>
+      <tr>
+        <th scope="col" colspan="2">Места работы</th>
+      </tr>
+      </thead>
+    </table>
+  </td></tr>
+  <tr><td colspan="2">
+      <div id='applicationControlButtons'>
+      </div>
+  </td></tr>
+</table>

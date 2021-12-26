@@ -1,0 +1,104 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 28 нояб. 2021 г., 12:29:19
+    Author     : vladislav
+*/
+.tabs {
+    position: relative; /* Относительное позиционирование */
+}
+.tab, .tab-title {
+    display: inline-block; /* Выстраиваем по горизонтали */
+}
+.tab input[type="radio"] { display: none; }
+.tab-title {
+    background: #ccc; /* Цвет фона */
+    padding: 5px 10px; /* Поля вокруг текста */
+    border: 1px solid #666; /* Параметры рамки */
+    border-bottom: none; /* Снизу линию убираем */
+}
+.tab-content {
+    position: absolute; /* Абсолютное позиционирование */
+    border: 1px solid #666; /* Параметры рамки */
+    padding: 10px; /* Поля вокруг текста */
+    left: 0; /* Размещаем у левого края */
+    width: calc(100% - 20px); /* Ширина содержимого */
+    display: none; /* Прячем вкладку */
+}
+.tab :checked + .tab-title {
+    position: relative; /* Относительное позиционирование */
+    background: #fff; /* Цвет фона */
+    top: 1px; /* Сдвигаем вниз */
+    z-index: 1; /* Отображаем поверх содержимого */
+}
+.tab :checked ~ .tab-content {
+    display: block; /* Показываем активную вкладку */
+}
+.center_auth_frame {
+    margin:20% 34% 25% 34%;
+    width:32%;
+    height:30%;
+}
+
+.auth_field {
+    width:99%;
+}
+
+.register_link {
+    position: absolute;
+    right: 10px;
+}
+
+.form_hint {
+    color: red;
+    font-size: 11px;
+}
+
+.central_column {
+    margin:0% 25% 0% 25%;
+    width:50%;
+    border: 1px solid #666;
+    padding: 10px;
+}
+
+.central_header {
+    text-align: center;
+}
+
+.hint_text {
+    color:graytext;
+    font-family: arial;
+    font-size: 14px;
+    font-stretch: expanded;
+    padding: 2px;
+}
+
+.заполнено {
+    color: #212529;
+}
+
+.принято_в_обработку {
+    color: #007bff;
+}
+
+.отправлено_на_доработку {
+    color: #ffc107;
+}
+
+.паспорт_оформляется {
+    color: #82B366;
+}
+
+.паспорт_готов_к_получению {
+    color: #2D7600;
+}
+
+.паспорт_выдан {
+    color: #28a745;
+}
+
+.в_оформлении_отказано {
+    color: #dc3545;
+}
