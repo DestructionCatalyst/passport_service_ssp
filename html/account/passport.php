@@ -55,7 +55,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHPWebPage.php to 
       <?php
         include '../custom_form.php';
         include '../redirect.php';
-        include '../send_request.php';
         include 'forms.php';
         
         $request_method = filter_input(INPUT_SERVER, 'REQUEST_METHOD');

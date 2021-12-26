@@ -14,6 +14,7 @@ include_once 'string_utils.php';
 
 class MySQLDB {
 
+    public static $db;
     private $conn;
     private $debug;
 
@@ -26,9 +27,7 @@ class MySQLDB {
         $config_arr_raw = explode(";", $config_str);
         $config_arr = array_map('trim', $config_arr_raw);
         
-        if($debug){
-            mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
-        }
+        mysqli_report(MYSQLI_REPORT_STRICT | MYSQLI_REPORT_ALL);
         
         $this->conn = new mysqli($config_arr[0],
                 $config_arr[1], $config_arr[2], $config_arr[3]);
@@ -40,6 +39,13 @@ class MySQLDB {
         $this->debug = $debug;
     }
     
+    static function getInstance() {
+        if (!isset(self::$db)){
+            self::$db = new MySQLDB('/usr/local/etc/db_config');
+        }
+        return self::$db;
+    }
+            
     function echoIfDebug($str){
         if ($this->debug){
             echo $str.'</br>';
@@ -98,6 +104,7 @@ class MySQLDB {
 
     function tableContains($table, $where = "") {
         $SQLstring = "SELECT * FROM " . $table . " WHERE " . $where . ";";
+        $this->echoIfDebug($SQLstring);
         $result = $this->rawQuery($SQLstring);
         return $result and $result->num_rows > 0;
     }
@@ -175,6 +182,10 @@ class MySQLDB {
     
     function rollback(int $flags = 0, ?string $name = null){
         return $this->conn->rollback($flags, $name);
+    }
+    
+    function autocommit(bool $enable){
+        return $this->conn->autocommit($enable);
     }
 
 }

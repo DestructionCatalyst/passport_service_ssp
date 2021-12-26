@@ -29,7 +29,7 @@ if($request_method == 'GET'){
         'full_name' => $full_name,
         'has_registration' => $has_registration,
         'has_temp_registration' => $has_temp_registration,
-        'has_passport' => $has_registration,
+        'has_passport' => $has_passport,
         ];
     
     echo json_encode($result);

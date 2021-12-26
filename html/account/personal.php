@@ -22,7 +22,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHPWebPage.php to 
           $("#sideMenu").load('account_side_menu.html'); 
         });
     </script>
-    <script type="text/javascript" src="../api/loadApiData.js"></script>
+    <script type="text/javascript" src="api/loadApiData.js"></script>
     <script type="text/javascript">
         loadDataFromApi('user_data.php');
     </script>
@@ -40,7 +40,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHPWebPage.php to 
       <?php
         include '../custom_form.php';
         include '../redirect.php';
-        include '../send_request.php';
         
         $request_method = filter_input(INPUT_SERVER, 'REQUEST_METHOD');
         

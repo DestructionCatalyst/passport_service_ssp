@@ -18,14 +18,33 @@ class EmployeeApplicationsApiController extends ApiController{
     
     public function onPost() {
         //TODO trancactions
-        $db = new MySQLDB("/usr/local/etc/db_config");
+        $db = MySQLDB::getInstance();
         
         $id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT);
         
-        $db->update("application", 
+        try {
+            $db->autocommit(false);
+            $db->rawQuery(
+                "SET GLOBAL TRANSACTION ISOLATION LEVEL SERIALIZABLE;"
+            );
+            
+            $db->beginTransaction();
+            
+            $db->update("application", 
                         ['employee_id', 'status'], 
                         [$_SESSION['employeeid'], "Принято в обработку"],
                         "id = '" . $id . "'");
+            
+            // Для удобства моделирования
+            if ($_SESSION['employeeid'] == 1){
+                sleep(10);
+            }
+            
+            $db->commit();
+        } catch (\Throwable $e) {
+            $db->rollback();
+            echo self::conflict();
+        }
         
         echo ApiController::success();
     }

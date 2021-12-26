@@ -50,7 +50,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHPWebPage.php to 
                     );
             
             echo $form->render();
-            echo password_hash('Sergey_115',
+            echo password_hash('Misha_1998',
                                     PASSWORD_DEFAULT)
         ?>
             </div>

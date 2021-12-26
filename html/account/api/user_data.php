@@ -1,6 +1,6 @@
 <?php
-include 'require_user.php';
-include '../mysqldb.php';
+include filter_input(INPUT_SERVER, 'DOCUMENT_ROOT') . '/require_user.php';
+include filter_input(INPUT_SERVER, 'DOCUMENT_ROOT') . '/mysqldb.php';
 header('Content-Type: application/json; charset=utf-8');
 
 $request_method = filter_input(INPUT_SERVER, 'REQUEST_METHOD');

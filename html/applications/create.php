@@ -151,8 +151,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHPWebPage.php to 
                         url: "api/applications_data.php",
                         data: collectedData,
                         success: function () {
-                            $("#successAlertBlock").html("Данные сохранены");
-                            $("#successAlertBlock").show();
+                            window.location.replace('../');
                         }
                     });
                     e.preventDefault();
@@ -164,8 +163,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHPWebPage.php to 
                         url: "api/applications_data.php",
                         data: collectedData,
                         success: function () {
-                            $("#successAlertBlock").html("Данные сохранены");
-                            $("#successAlertBlock").show();
+                            window.location.replace('../');
                         }
                     });
                     e.preventDefault();

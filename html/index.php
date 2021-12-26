@@ -38,7 +38,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHPWebPage.php to 
             <div class="alert alert-warning" role="alert" id="passport_alert"
                  style="display: none;">
                 <p>
-                    <a href="passport.php">
+                    <a href="account/passport.php">
                         Укажите данные паспорта</a>, чтобы можно было
                         заполнить заявление
                 </p>

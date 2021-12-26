@@ -50,6 +50,15 @@ class ApiController {
                 ]);
     }
     
+    static function conflict() {
+        header('HTTP/1.1 409 Conflict');
+        return json_encode(
+                [
+                    'code' => 409,
+                    'message' => "Conflict"
+                ]);
+    }
+    
     static function unprocessableEntity() {
         header('HTTP/1.1 422 Unprocessable Entity');
         return json_encode(

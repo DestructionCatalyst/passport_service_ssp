@@ -4,7 +4,11 @@ include_once filter_input(INPUT_SERVER, 'DOCUMENT_ROOT') . '/mysqldb.php';
 include_once '../forms.php';
 
 class PassportApiController extends ApiController{
-    
+    function __construct() {
+        parent::__construct("user");
+    }
+
+
     public function onGet() {
         $db = new MySQLDB("/usr/local/etc/db_config");
         $existing_data = $db->selectFirst("passport", 

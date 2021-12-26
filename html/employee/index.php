@@ -1,3 +1,7 @@
+<?php
+include '../redirect_if_not_employee.php';
+?>
+
 <!DOCTYPE html>
 <!--
 Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -74,7 +78,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHPWebPage.php to 
                         newApplications();
                     },
                     error: function () {
-                        alert('Возникла ошибка');
+                        alert('Заявление уже принято в обработку другим сотрудником');
                     }
                   });
         });

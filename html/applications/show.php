@@ -53,17 +53,16 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHPWebPage.php to 
                     $.ajax({
                         type: "POST",
                         url: "../api/comment_data.php",
-                        data: {'comment_id': comment.id, 'action': 'fix'}
+                        data: {'comment_id': comment.id, 'action': 'fix'},
                         success: function(){
                             commitButton.prop('disabled', true);
                             $(commitButton).parent()
                                     .find('.last_change_date')
                                     .html(dateFormat(new Date()));
                             activateControlButton();
-                            e.preventDefault();
                         }
                     });
-                    
+                    e.preventDefault();
                 });
             }
         }
