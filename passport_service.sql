@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: mysql
--- Время создания: Дек 26 2021 г., 23:43
+-- Время создания: Дек 27 2021 г., 21:26
 -- Версия сервера: 8.0.27
 -- Версия PHP: 7.4.20
 
@@ -44,7 +44,7 @@ INSERT INTO `application` (`id`, `user_id`, `employee_id`, `status`, `reason`, `
 (1, 1, 1, 'В оформлении отказано', 'Первичное получение', '2021-12-01'),
 (2, 1, 1, 'Паспорт выдан', 'Взамен действующего', '2021-12-21'),
 (3, 1, 1, 'Принято в обработку', 'Первичное получение', '2021-12-23'),
-(6, 3, 3, 'Принято в обработку', 'Первичное получение', '2021-12-26');
+(6, 3, NULL, 'Заполнено', 'Первичное получение', '2021-12-26');
 
 -- --------------------------------------------------------
 
@@ -67,11 +67,11 @@ CREATE TABLE `comment` (
 --
 
 INSERT INTO `comment` (`id`, `application_id`, `stage`, `description`, `status`, `creation_date`, `last_change_date`) VALUES
-(1, 3, 2, 'qwe', 'Исправлено', '2021-11-25', '2021-12-25'),
-(2, 3, 3, 'asd', 'Исправлено', '2021-11-25', '2021-12-25'),
-(3, 3, 5, 'zxc', 'Исправлено', '2021-11-25', '2021-12-25'),
-(4, 3, 7, 'vbn', 'Исправлено', '2021-11-25', '2021-12-25'),
-(18, 3, 3, 'asd', 'Внесены правки', '2021-11-25', '2021-12-26');
+(1, 3, 2, 'В паспорте с такими данными указано другое имя', 'Исправлено', '2021-11-25', '2021-12-25'),
+(2, 3, 3, 'Такого адреса не существует', 'Исправлено', '2021-11-25', '2021-12-25'),
+(3, 3, 5, 'Указано, что паспорт будет получен взамен действующего, но других паспортов на Ваше имя не обнаружено', 'Исправлено', '2021-11-25', '2021-12-25'),
+(4, 3, 7, 'Такая компания не зарегистрирована', 'Исправлено', '2021-11-25', '2021-12-25'),
+(18, 3, 3, 'Такого адреса не существует', 'Внесены правки', '2021-11-25', '2021-12-26');
 
 -- --------------------------------------------------------
 
@@ -211,8 +211,8 @@ CREATE TABLE `work_place` (
 --
 
 INSERT INTO `work_place` (`id`, `name`, `address`, `employment_date`, `unemployment_date`, `user_id`) VALUES
-(1, 'фыв1', 'йцу1', '2021-12-01', '2021-12-15', 1),
-(2, 'фыв2', 'йцу2', '2021-12-02', '2021-12-16', 1);
+(1, 'ООО \"Страходром\"', 'Москва, Ленинский пр., д.30', '2021-12-01', '2021-12-15', 1),
+(2, 'ООО \"Шарашкина контора\"', 'Москва, Кутузовский пр., д.50', '2021-12-02', '2021-12-16', 1);
 
 --
 -- Индексы сохранённых таблиц
@@ -285,13 +285,13 @@ ALTER TABLE `work_place`
 -- AUTO_INCREMENT для таблицы `application`
 --
 ALTER TABLE `application`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT для таблицы `comment`
 --
 ALTER TABLE `comment`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT для таблицы `employee`
@@ -303,13 +303,13 @@ ALTER TABLE `employee`
 -- AUTO_INCREMENT для таблицы `passport`
 --
 ALTER TABLE `passport`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT для таблицы `permanent_registration`
 --
 ALTER TABLE `permanent_registration`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT для таблицы `temporary_registration`
@@ -321,13 +321,13 @@ ALTER TABLE `temporary_registration`
 -- AUTO_INCREMENT для таблицы `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT для таблицы `work_place`
 --
 ALTER TABLE `work_place`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц
