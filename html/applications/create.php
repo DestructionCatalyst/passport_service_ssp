@@ -18,6 +18,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHPWebPage.php to 
         crossorigin="anonymous">
     <script type="text/javascript" 
     src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script type="text/javascript" src="http://site.local/session_timeout.js"></script>
     <script type="text/javascript" 
     src="http://site.local/validateFunction.js"></script>
     
@@ -27,14 +28,51 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHPWebPage.php to 
         let firstStepForm = '<?php echo $applicationForm->render()?>';
         let workplaceForm = '<?php echo $workPlaceForm->render()?>';
         
+        function loadWorkplaces() {
+            $.getJSON('api/workplaces_data.php', function(data){
+                if (data !== null){
+                    collectedData.workplaces = data;
+                }
+            });
+        }
+        
+        function getCookie(c_name) {
+            if (document.cookie.length > 0) {
+                c_start = document.cookie.indexOf(c_name + "=");
+                if (c_start != -1) {
+                    c_start = c_start + c_name.length + 1;
+                    c_end = document.cookie.indexOf(";", c_start);
+                    if (c_end == -1) {
+                        c_end = document.cookie.length;
+                    }
+                    return decodeURIComponent(document.cookie.substring(c_start, c_end));
+                }
+                return null;
+            }
+            return null;
+        }
+        
         function loadFirstForm() {
+            let draft = getCookie('draft');
+            if (draft !== null){
+                collectedData = JSON.parse(draft);
+            }
+            else {
+                loadWorkplaces();
+            }
             $('#form_container').html(firstStepForm);
             $('.d-flex.form-row').prepend($('<div class="m-2">').append(
                     $('<button id="back" class="btn btn-danger">').append("Назад <")
                     ));
             $('#subheader').html('Шаг 1. Выберите необходимый пункт');
             $('#back').click(function(e) {
-                if (confirm('Вернутся в профиль? Введенные данные будут удалены.')){
+                if (confirm('Вернутся в профиль? Введенные данные будут сохранены еще 10 минут.')){
+                    obj = $("#applicationForm").serializeArray().reduce(
+                        function(m,v){m[v.name] = v.value;return m;}, {});
+                    collectedData['reason_and_limitations'] = obj;
+                    document.cookie = "draft=" + 
+                            encodeURIComponent(JSON.stringify(collectedData)) +
+                            "; max-age=600; samesite=strict;";
                     window.location.replace('../');
                 }
                 e.preventDefault();
@@ -43,7 +81,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHPWebPage.php to 
                 obj = $(this).serializeArray().reduce(
                     function(m,v){m[v.name] = v.value;return m;}, {});
                 collectedData['reason_and_limitations'] = obj;
-                console.log(collectedData);
                 curStep++;
                 loadWorkplaceForm();
                 e.preventDefault();
@@ -180,13 +217,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHPWebPage.php to 
     </script>
   </head>
   <body>
-      <?php
-      $basics_filled = false;
-      $entered_data = [];
-      
-        
-        $request_method = filter_input(INPUT_SERVER, 'REQUEST_METHOD');
-      ?>
     <div class="container">
       <div class="row mt-3">
         <div class="col">

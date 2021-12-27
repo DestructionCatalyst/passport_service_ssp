@@ -17,6 +17,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHPWebPage.php to 
         crossorigin="anonymous">
     <script type="text/javascript" 
     src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script type="text/javascript" src="http://site.local/session_timeout.js"></script>
     <script type="text/javascript" 
     src="http://site.local/getUrlParameter.js"></script>
     <script type="text/javascript" 
@@ -59,7 +60,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHPWebPage.php to 
                             $(commitButton).parent()
                                     .find('.last_change_date')
                                     .html(dateFormat(new Date()));
-                            activateControlButton();
+                            activateControlButton({'application': application});
                         }
                     });
                     e.preventDefault();

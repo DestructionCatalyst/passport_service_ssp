@@ -51,7 +51,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHPWebPage.php to 
             
             echo $form->render();
             echo password_hash('Misha_1998',
-                                    PASSWORD_DEFAULT)
+                                    PASSWORD_DEFAULT);
+                    print_r(PDO::getAvailableDrivers());
         ?>
             </div>
         </div>

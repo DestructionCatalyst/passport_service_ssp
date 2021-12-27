@@ -7,6 +7,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHPWebPage.php to 
   <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style.css">
+    <link 
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+        rel="stylesheet" 
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+        crossorigin="anonymous">
     <title>Регистрация</title>
   </head>
   <body>
@@ -153,7 +158,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHPWebPage.php to 
         
     ?>
     <div class="central_column">
-      <h1 class="central_header">Регистрация, шаг 1</h1>
+      <h1 class="central_header">Регистрация</h1>
       <form name="register" method="POST" action="register.php">
         <?php
         if($hint){
@@ -190,7 +195,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHPWebPage.php to 
         <p><input type="password" class="auth_field" required="true"
                   name="repeat_password" placeholder="Подтвердите пароль"></p>
         <p>
-          <input type="submit" name="send" value="Зарегистрироваться">
+          <input type="submit" name="send" class="btn btn-primary" value="Зарегистрироваться">
         </p>
       </form>
     </div>

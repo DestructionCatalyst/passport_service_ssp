@@ -20,7 +20,7 @@ class ApplicationsApiController extends ApiController{
     }
     
     public function onPost() {
-        $db = new MySQLDB("/usr/local/etc/db_config", true);
+        $db = new MySQLDB("/usr/local/etc/db_config");
         include '../forms.php';
         $post_array = filter_input_array(INPUT_POST);
         if ($applicationForm->validate_input(
@@ -39,15 +39,16 @@ class ApplicationsApiController extends ApiController{
                     $_SESSION['userid'],
                     date('Y-m-d')
                 ]]);
-             
-            foreach ($post_array['workplaces'] as $workplace) {
-                $workplace += ["user_id" => $_SESSION['userid']];
-                if (!$workplace['unemployment_date']){
-                    unset($workplace['unemployment_date']);
+            if (isset($post_array['workplaces'])){
+                foreach ($post_array['workplaces'] as $workplace) {
+                    $workplace += ["user_id" => $_SESSION['userid']];
+                    if (!$workplace['unemployment_date']){
+                        unset($workplace['unemployment_date']);
+                    }
+                    $db->insert("work_place", 
+                                array_keys($workplace), 
+                                [array_values($workplace)]);
                 }
-                $db->insert("work_place", 
-                            array_keys($workplace), 
-                            [array_values($workplace)]);
             }
             
             echo ApiController::success();

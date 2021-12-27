@@ -17,6 +17,16 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHPWebPage.php to 
         crossorigin="anonymous">
     <script type="text/javascript" 
         src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script type="text/javascript" src="http://site.local/session_timeout.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            let searchParams = new URLSearchParams(window.location.search);
+            if (searchParams.has('success')){
+                $("#successAlertBlock").html("Данные сохранены");
+                $("#successAlertBlock").show();
+            }
+        });
+    </script>
     <script type="text/javascript"> 
         $(function(){
           $("#sideMenu").load('account_side_menu.html'); 
@@ -89,7 +99,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHPWebPage.php to 
                         $db->delete("permanent_registration", 
                                 "user_id = ".$_SESSION['userid']);
                     }
-                    redirect('../index.php');
+                    redirect('?success=true');
                 }
             }
         }
@@ -103,6 +113,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHPWebPage.php to 
             <h1>Прописка</h1>
             <div class="alert alert-danger" id="alertBlock" 
                  role="alert" style="display: none;"></div>
+            <div class="alert alert-success" id="successAlertBlock" '
+                . 'role="alert" style="display: none;"></div>
             <form id="regForm" method="POST" action="registration_place.php">
               <div class="mb-3">
                 <label for="registrationAddress" class="form-label">

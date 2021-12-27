@@ -18,6 +18,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHPWebPage.php to 
     <title>Личный кабинет</title>
     <script type="text/javascript" 
     src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script type="text/javascript" src="http://site.local/session_timeout.js"></script>
     <script type="text/javascript"> 
         $(function(){
           $('#navbarContainer').load('navbar.html', function() {

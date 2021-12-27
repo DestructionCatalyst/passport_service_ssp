@@ -69,6 +69,7 @@ class CommentApiController extends ApiController{
         }
         elseif ($action === 'approve') {
             self::authorizeEmployee();
+            $comment_id = $input_array['comment_id'];
             $this->approve($db, $comment_id);
             echo self::success();
         }

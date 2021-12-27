@@ -17,6 +17,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHPWebPage.php to 
         crossorigin="anonymous">
     <script type="text/javascript" 
         src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script type="text/javascript" src="http://site.local/session_timeout.js"></script>
     <script type="text/javascript"> 
         $(function(){
           $("#sideMenu").load('account_side_menu.html'); 

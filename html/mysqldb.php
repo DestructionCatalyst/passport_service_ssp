@@ -12,6 +12,9 @@
  */
 include_once 'string_utils.php';
 
+//error_reporting(E_ERROR | E_PARSE);
+
+
 class MySQLDB {
 
     public static $db;
@@ -27,20 +30,31 @@ class MySQLDB {
         $config_arr_raw = explode(";", $config_str);
         $config_arr = array_map('trim', $config_arr_raw);
         
-        mysqli_report(MYSQLI_REPORT_STRICT | MYSQLI_REPORT_ALL);
-        
-        $this->conn = new mysqli($config_arr[0],
-                $config_arr[1], $config_arr[2], $config_arr[3]);
-
-        if ($this->conn->connect_error) {
-            die("Connection failed: " . $this->conn->connect_error);
+        try{
+            $this->conn = new PDO("mysql:host=$config_arr[0];dbname=$config_arr[3]", 
+                $config_arr[1], 
+                $config_arr[2]);
         }
+        catch (PDOException $exception){    
+            die("Connection failed: " . $exception->getMessage());
+ 
+        }
+        
+        $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $this->conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+        //mysqli_report(MYSQLI_REPORT_STRICT | MYSQLI_REPORT_ALL);
+        
+        //$this->conn = new mysqli($config_arr[0],
+        //        $config_arr[1], $config_arr[2], $config_arr[3]);
+
+        
         
         $this->debug = $debug;
     }
     
     static function getInstance() {
         if (!isset(self::$db)){
+            //echo "Created";
             self::$db = new MySQLDB('/usr/local/etc/db_config');
         }
         return self::$db;
@@ -59,7 +73,7 @@ class MySQLDB {
     }
     
     private function _select($table, $columns, $where = "", $group_by = "",
-            $having = "", $order_by = "", $limit = "") {
+            $having = "", $order_by = "", $limit = "", $for = "") {
         $SQLstring = "SELECT ";
         if ($columns == '*'){
             $SQLstring = $SQLstring . ' *';
@@ -73,6 +87,7 @@ class MySQLDB {
         appendIfNotEmpty($SQLstring, " HAVING ", $having);
         appendIfNotEmpty($SQLstring, " ORDER BY ", $order_by);
         appendIfNotEmpty($SQLstring, " LIMIT ", $limit);
+        appendIfNotEmpty($SQLstring, " FOR ", $for);
         $SQLstring = $SQLstring . ';';
         $this->echoIfDebug($SQLstring);
         $result = $this->rawQuery($SQLstring);
@@ -80,33 +95,30 @@ class MySQLDB {
     }
 
     function selectFirst($table, $columns, $where = "", $group_by = "",
-            $having = "", $order_by = "", $limit = "") {
+            $having = "", $order_by = "", $limit = "", $for = "") {
         $result = $this->_select($table, $columns, $where, 
-                $group_by, $having, $order_by, $limit);
+                $group_by, $having, $order_by, $limit, $for);
         if ($result) {
-            return $result->fetch_array(MYSQLI_ASSOC);
+            return $result->fetch();
         }
         return $result;
     }
     
     function select($table, $columns, $where = "", $group_by = "",
-            $having = "", $order_by = "", $limit = "") {
+            $having = "", $order_by = "", $limit = "", $for = "") {
         $result = $this->_select($table, $columns, $where, 
-                $group_by, $having, $order_by, $limit);
-        $values = [];
+                $group_by, $having, $order_by, $limit, $for);
         if ($result) {
-            while($row = $result->fetch_array(MYSQLI_ASSOC)) {
-                array_push($values, $row);
-            }
+            return $result->fetchAll();
         }
-        return $values;
+        
     }
 
     function tableContains($table, $where = "") {
         $SQLstring = "SELECT * FROM " . $table . " WHERE " . $where . ";";
         $this->echoIfDebug($SQLstring);
         $result = $this->rawQuery($SQLstring);
-        return $result and $result->num_rows > 0;
+        return $result and $result->rowCount() > 0;
     }
 
     function insert($table, $columns, $values) {
@@ -127,8 +139,6 @@ class MySQLDB {
         $SQLstring = $SQLstring . ';';
         $this->echoIfDebug($SQLstring);
         $this->rawQuery($SQLstring);
-        
-        return $this->conn->insert_id;
     }
 
     function update($table, $columns, $values, $where) {
@@ -166,22 +176,22 @@ class MySQLDB {
     function getEnumValues($table, $field )
     {
         $type = $this->rawQuery( "SHOW COLUMNS FROM {$table} "
-        . "WHERE Field = '{$field}'" )->fetch_row()[1];
+        . "WHERE Field = '{$field}'" )->fetch()['Type'];
         preg_match("/^enum\(\'(.*)\'\)$/", $type, $matches);
         $enum = explode("','", $matches[1]);
         return $enum;
     }
     
-    function beginTransaction(int $flags = 0, ?string $name = null){
-        return $this->conn->begin_transaction($flags, $name);
+    function beginTransaction(){
+        return $this->conn->beginTransaction();
     }
     
-    function commit(int $flags = 0, ?string $name = null){
-        return $this->conn->commit($flags, $name);
+    function commit(){
+        return $this->conn->commit();
     }
     
-    function rollback(int $flags = 0, ?string $name = null){
-        return $this->conn->rollback($flags, $name);
+    function rollback(){
+        return $this->conn->rollBack();
     }
     
     function autocommit(bool $enable){

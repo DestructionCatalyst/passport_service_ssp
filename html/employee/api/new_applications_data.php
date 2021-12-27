@@ -1,7 +1,7 @@
 <?php
 
-include filter_input(INPUT_SERVER, 'DOCUMENT_ROOT') . '/api_controller.php';
-include filter_input(INPUT_SERVER, 'DOCUMENT_ROOT') . '/mysqldb.php';
+include_once filter_input(INPUT_SERVER, 'DOCUMENT_ROOT') . '/api_controller.php';
+include_once filter_input(INPUT_SERVER, 'DOCUMENT_ROOT') . '/mysqldb.php';
 
 class EmployeeApplicationsApiController extends ApiController{
     
@@ -17,33 +17,37 @@ class EmployeeApplicationsApiController extends ApiController{
     }
     
     public function onPost() {
-        //TODO trancactions
         $db = MySQLDB::getInstance();
         
         $id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT);
         
         try {
-            $db->autocommit(false);
-            $db->rawQuery(
-                "SET GLOBAL TRANSACTION ISOLATION LEVEL SERIALIZABLE;"
-            );
+            $db->rawQuery("LOCK TABLES application WRITE;");
             
-            $db->beginTransaction();
+            $status = $db->selectFirst(
+                    table: "application", 
+                    columns: '*', 
+                    where: "id = '" . $id . "'")['status'];
             
-            $db->update("application", 
-                        ['employee_id', 'status'], 
-                        [$_SESSION['employeeid'], "Принято в обработку"],
-                        "id = '" . $id . "'");
-            
+            if($status == 'Заполнено'){
+                $db->update(
+                    table: "application", 
+                    columns: ['employee_id', 'status'], 
+                    values: [$_SESSION['employeeid'], "Принято в обработку"],
+                    where: "id = '" . $id . "'");
+            }
+            else{
+                echo self::conflict();
+            }
+
             // Для удобства моделирования
             if ($_SESSION['employeeid'] == 1){
                 sleep(10);
             }
-            
-            $db->commit();
+
+            $db->rawQuery("UNLOCK TABLES;");
         } catch (\Throwable $e) {
-            $db->rollback();
-            echo self::conflict();
+            echo ApiController::internalServerError();
         }
         
         echo ApiController::success();

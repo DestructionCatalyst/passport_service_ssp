@@ -10,6 +10,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHPWebPage.php to 
  <head>
   <meta charset="UTF-8">
   <link rel="stylesheet" href="style.css">
+  <link 
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+        rel="stylesheet" 
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+        crossorigin="anonymous">
   <title>Вход</title>
  </head>
  <body>
@@ -99,7 +104,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHPWebPage.php to 
        ?> 
        <p>
         <input type="hidden" name="type" value="user">
-        <input type="submit" name="send" value="Войти">
+        <input type="submit" name="send" class="btn btn-primary" value="Войти">
         <a href="/register.php" class="register_link">Регистрация</a>
        </p>
       </form>
@@ -126,7 +131,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHPWebPage.php to 
        ?>
        <p>
         <input type="hidden" name="type" value="employee">
-        <input type="submit" name="send" value="Войти">
+        <input type="submit" name="send" class="btn btn-primary" value="Войти">
        </p>
       </form>
      </section>
