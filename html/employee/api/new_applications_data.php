@@ -20,37 +20,37 @@ class EmployeeApplicationsApiController extends ApiController{
         $db = MySQLDB::getInstance();
         
         $id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT);
+        $lock = filter_input(INPUT_POST, 'lock', FILTER_VALIDATE_BOOLEAN);
         
-        try {
+        if ($lock){
             $db->rawQuery("LOCK TABLES application WRITE;");
-            
-            $status = $db->selectFirst(
-                    table: "application", 
-                    columns: '*', 
-                    where: "id = '" . $id . "'")['status'];
-            
-            if($status == 'Заполнено'){
-                $db->update(
-                    table: "application", 
-                    columns: ['employee_id', 'status'], 
-                    values: [$_SESSION['employeeid'], "Принято в обработку"],
-                    where: "id = '" . $id . "'");
-            }
-            else{
-                echo self::conflict();
-            }
+        }
 
-            // Для удобства моделирования
-            if ($_SESSION['employeeid'] == 1){
-                sleep(10);
-            }
+        $status = $db->selectFirst(
+                table: "application", 
+                columns: '*', 
+                where: "id = '" . $id . "'")['status'];
 
-            $db->rawQuery("UNLOCK TABLES;");
-        } catch (\Throwable $e) {
-            echo ApiController::internalServerError();
+        // Для удобства моделирования
+        sleep(5);
+
+        if($status == 'Заполнено'){
+            $db->update(
+                table: "application", 
+                columns: ['employee_id', 'status'], 
+                values: [$_SESSION['employeeid'], "Принято в обработку"],
+                where: "id = '" . $id . "'");
+        }
+        else{
+            // Returns responce with 409 code
+            echo self::conflict();
+            exit;
         }
         
-        echo ApiController::success();
+        if ($lock){
+            $db->rawQuery("UNLOCK TABLES;");
+        }
+        echo self::success();
     }
 }
 

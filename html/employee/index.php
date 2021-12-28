@@ -70,17 +70,26 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHPWebPage.php to 
         
         $(document).on("click touchend", "#newApplication", function () {
             $.ajax({
-                    type: "POST",
-                    url: "api/new_applications_data.php",
-                    data: {"id": $(this).attr('dbid')},
-                    success: function () {
-                        myApplications();
-                        newApplications();
-                    },
-                    error: function () {
-                        alert('Заявление уже принято в обработку другим сотрудником');
+                type: "POST",
+                url: "api/new_applications_data.php",
+                data: {
+                    "id": $(this).attr('dbid'), 
+                    'lock': $('#tableLockSwitchCheck').is(':checked')
+                },
+                success: function () {
+                    // Обновить списки
+                    myApplications();
+                    newApplications();
+                },
+                error: function(response) {
+                    if (response.status === 409){
+                        alert( "Это заявление уже принято в обработку другим сотрудником");
                     }
-                  });
+                    else {
+                        alert( "Произошла ошибка при обработке запроса");
+                    }
+                }
+            });
         });
         
         $(document).on("click touchend", "#myApplication", function () {
@@ -135,6 +144,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHPWebPage.php to 
                     <div class="col">
                       <div class="d-flex justify-content-end">
                         <div class="form-check form-switch">
+                          <label class="form-check-label" for="flexSwitchCheckDefault">Блокировка</label>
+                          <input class="form-check-input" type="checkbox" id="tableLockSwitchCheck" checked>
+                        </div>
+                        <div class="form-check form-switch mx-2">
                           <label class="form-check-label" for="flexSwitchCheckDefault">Автоообновление</label>
                           <input class="form-check-input" type="checkbox" id="autoUpdateSwitchCheck" checked>
                         </div>

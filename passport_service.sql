@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: mysql
--- Время создания: Дек 27 2021 г., 21:26
+-- Время создания: Дек 28 2021 г., 14:48
 -- Версия сервера: 8.0.27
 -- Версия PHP: 7.4.20
 
@@ -43,8 +43,8 @@ CREATE TABLE `application` (
 INSERT INTO `application` (`id`, `user_id`, `employee_id`, `status`, `reason`, `application_date`) VALUES
 (1, 1, 1, 'В оформлении отказано', 'Первичное получение', '2021-12-01'),
 (2, 1, 1, 'Паспорт выдан', 'Взамен действующего', '2021-12-21'),
-(3, 1, 1, 'Принято в обработку', 'Первичное получение', '2021-12-23'),
-(6, 3, NULL, 'Заполнено', 'Первичное получение', '2021-12-26');
+(3, 1, NULL, 'Заполнено', 'Первичное получение', '2021-12-23'),
+(20, 2, NULL, 'Заполнено', 'Первичное получение', '2021-12-23');
 
 -- --------------------------------------------------------
 
@@ -117,7 +117,8 @@ CREATE TABLE `passport` (
 
 INSERT INTO `passport` (`id`, `series`, `number`, `issue_date`, `issue_organ`, `user_id`) VALUES
 (1, '1234', '987654', '2021-12-02', 'УМВД г.Москвы', 1),
-(6, '9876', '654321', '2021-12-03', 'УМВД г.Москвы', 3);
+(6, '9876', '654321', '2021-12-03', 'УМВД г.Москвы', 3),
+(8, '2345', '234567', '2010-10-10', 'УМВД г.Москвы', 2);
 
 -- --------------------------------------------------------
 
@@ -211,8 +212,8 @@ CREATE TABLE `work_place` (
 --
 
 INSERT INTO `work_place` (`id`, `name`, `address`, `employment_date`, `unemployment_date`, `user_id`) VALUES
-(1, 'ООО \"Страходром\"', 'Москва, Ленинский пр., д.30', '2021-12-01', '2021-12-15', 1),
-(2, 'ООО \"Шарашкина контора\"', 'Москва, Кутузовский пр., д.50', '2021-12-02', '2021-12-16', 1);
+(12, 'ООО \"Страходром\"', 'Москва, Ленинский пр., д.30', '2021-12-01', '2021-12-15', 1),
+(13, 'ООО \"Шарашкина контора\"', 'Москва, Кутузовский пр., д.50', '2021-12-02', '2021-12-16', 1);
 
 --
 -- Индексы сохранённых таблиц
@@ -285,7 +286,7 @@ ALTER TABLE `work_place`
 -- AUTO_INCREMENT для таблицы `application`
 --
 ALTER TABLE `application`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT для таблицы `comment`
@@ -303,7 +304,7 @@ ALTER TABLE `employee`
 -- AUTO_INCREMENT для таблицы `passport`
 --
 ALTER TABLE `passport`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT для таблицы `permanent_registration`
@@ -327,7 +328,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT для таблицы `work_place`
 --
 ALTER TABLE `work_place`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц

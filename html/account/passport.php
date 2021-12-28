@@ -64,6 +64,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHPWebPage.php to 
                         $("#dangerAlertBlock").hide();
                         $("#successAlertBlock").html("Данные сохранены");
                         $("#successAlertBlock").show();
+                    },
+                    error: function (response) {
+                        alert('Сервер вернул сообщение об ошибке с кодом ' + response.status);
                     }
                   });
                 

@@ -20,8 +20,9 @@ class PassportApiController extends ApiController{
     
     public function onPost() {
         $db = new MySQLDB("/usr/local/etc/db_config");
-        include '../forms.php';
+        
         if ($passportForm->validate()){
+            // Save to DB
             $db = new MySQLDB("/usr/local/etc/db_config");
             $safePost = filter_input_array(INPUT_POST, [
                  "series" => FILTER_SANITIZE_NUMBER_INT,
@@ -34,9 +35,11 @@ class PassportApiController extends ApiController{
                                 array_keys($safePost), 
                                 array_values($safePost),
                                 "user_id");
+            // code 200
             echo ApiController::success();
         }
         else {
+            // code 422
             echo ApiController::unprocessableEntity();
         }
         
