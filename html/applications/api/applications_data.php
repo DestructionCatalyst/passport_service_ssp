@@ -40,6 +40,7 @@ class ApplicationsApiController extends ApiController{
                     date('Y-m-d')
                 ]]);
             if (isset($post_array['workplaces'])){
+                $db->delete("work_place", "user_id = '" . $_SESSION["userid"] . "'");
                 foreach ($post_array['workplaces'] as $workplace) {
                     $workplace += ["user_id" => $_SESSION['userid']];
                     if (!$workplace['unemployment_date']){

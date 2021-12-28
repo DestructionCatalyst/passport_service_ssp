@@ -23,6 +23,27 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHPWebPage.php to 
           $("#sideMenu").load('account_side_menu.html'); 
         });
     </script>
+    <script type="text/javascript">
+    $(document).ready(function() {
+        $.ajax({
+            dataType: "json",
+            url: '../api/user_extended_data.php', 
+            data: '', 
+            success: function(data){
+                if (data !== null){
+                    if (!data['has_open_applications']){
+                       $(':submit').prop('disabled', false);
+                       return;
+                    }
+                }
+                $(':submit').prop('disabled', true);
+            },
+            error: function(){
+                $(':submit').prop('disabled', true);
+            }
+        });
+    });
+    </script>
     <script type="text/javascript" src="api/loadApiData.js"></script>
     <script type="text/javascript">
         loadDataFromApi('user_data.php');

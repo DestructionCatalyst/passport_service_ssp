@@ -25,11 +25,19 @@ if($request_method == 'GET'){
             $db->tableContains('passport',
                     'user_'.$where_condition);
     
+    $has_open_applications = 
+            $db->tableContains('application',
+                    "user_id = '".$_SESSION['userid']."'"
+                    . " AND status != 'Отправлено на доработку'"
+                    . " AND status != 'Паспорт выдан'"
+                    . " AND status != 'В оформлении отказано'");
+    
     $result = [
         'full_name' => $full_name,
         'has_registration' => $has_registration,
         'has_temp_registration' => $has_temp_registration,
         'has_passport' => $has_passport,
+        'has_open_applications' => $has_open_applications
         ];
     
     echo json_encode($result);

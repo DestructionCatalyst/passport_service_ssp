@@ -6,13 +6,15 @@ $(document).ready(function() {
                     data['has_registration'] ||
                     data['has_temp_registration'];
             var has_passport = data['has_passport'];
+            var has_open_applications = data['has_open_applications'];
             if(!has_any_registration){
                 $('#registration_alert').show();
             }
             if(!has_passport) {
                 $('#passport_alert').show();
             }
-            if(has_any_registration && has_passport){
+            //console.log(has_any_registration && has_passport && (!has_open_applications));
+            if(has_any_registration && has_passport && (!has_open_applications)){
                 $('#apply_button').removeAttr("disabled");;
             }
         }
@@ -44,6 +46,11 @@ $(document).ready(function() {
                                         .append(object.status))
                     )));
             }
+        }
+    });
+    $('#apply_button').click(function (){
+        if (!$(this).prop('disabled')){
+            window.location.replace('applications/create.php');
         }
     });
 });

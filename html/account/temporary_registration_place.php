@@ -19,6 +19,27 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHPWebPage.php to 
         src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script type="text/javascript" src="http://site.local/session_timeout.js"></script>
     <script type="text/javascript">
+    $(document).ready(function() {
+        $.ajax({
+            dataType: "json",
+            url: '../api/user_extended_data.php', 
+            data: '', 
+            success: function(data){
+                if (data !== null){
+                    if (!data['has_open_applications']){
+                       $(':submit').prop('disabled', false);
+                       return;
+                    }
+                }
+                $(':submit').prop('disabled', true);
+            },
+            error: function(){
+                $(':submit').prop('disabled', true);
+            }
+        });
+    });
+    </script>
+    <script type="text/javascript">
         $(document).ready(function() {
             let searchParams = new URLSearchParams(window.location.search);
             if (searchParams.has('success')){

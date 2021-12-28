@@ -60,14 +60,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHPWebPage.php to 
               <ul class="list-group" id="applications_list">
                 
                 <li class="list-group-item">
-                  <div class="d-grid gap-2">
-                    <a class="d-grid gap-2" href="applications/create.php">
-                        <button type="button" class="btn btn-outline-success" 
-                                id="apply_button"
-                                disabled>
-                          + Подать заявление
-                        </button>
-                    </a>
+                  <div class="d-grid gap-2">                   
+                    <button type="button" class="btn btn-outline-success" 
+                            id="apply_button"
+                            disabled>
+                      + Подать заявление
+                    </button>
                   </div>
                 </li>
               </ul>
