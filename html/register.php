@@ -12,16 +12,32 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHPWebPage.php to 
         rel="stylesheet" 
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
         crossorigin="anonymous">
+    <script type="text/javascript" 
+        src="http://site.local/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            let searchParams = new URLSearchParams(window.location.search);
+            if (searchParams.has('success')){
+                window.location.replace('auth.php');
+            }
+            $('#phone').after('<p class="mt-3 form-label">Пол*' +
+                '<ul class="list-group list-group-horizontal list-unstyled"><li class="me-2">' +
+                '<input type="radio" id="sex_m" name="sex" value="М" checked class="form-check-input">' +
+                '<label class="form-label" for="sex_m">М</label>' +
+                '<li class="ms-2"></li>' +
+                '<input type="radio" id="sex_f" name="sex" value="Ж" class="form-check-input">' +
+                '<label class="form-label" for="sex_f">Ж</label>' +
+                '</li></ul></p>'
+            );
+        });
+    </script>
     <title>Регистрация</title>
   </head>
   <body>
     <?php
-        $hostname = "172.20.0.2";    // database hostname (from docker inspect)
-        $usernamedb = "root";    // database username
-        $passworddb = "root";        // database password
-        $dbName = "passport_service";        // database name
         include 'mysqldb.php';
         include 'redirect.php';
+        include 'custom_form.php';
 
         $db = new MySQLDB("/usr/local/etc/db_config");
         
@@ -45,6 +61,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHPWebPage.php to 
          "repeat_password" => FILTER_DEFAULT   
         ]);
         
+        setlocale(LC_ALL, "ru_RU.UTF-8");
         if ($safePost and $safePost["last_name"] and $safePost["first_name"] and 
                 $safePost["birth_date"] and $safePost["email"] and 
                 $safePost["phone"] and $safePost["sex"] and 
@@ -52,19 +69,20 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHPWebPage.php to 
                 $safePost["repeat_password"])
         {
             $checks_passed = true;
-            preg_match("/[А-ЯЁ][а-яё]+/", $safePost["last_name"], $matches);
+            preg_match("/^[А-ЯЁ][а-яё]+(\-[А-ЯЁ][а-яё]+)?$/u", 
+                    $safePost["last_name"], $matches);
             if (!$matches){
                 $checks_passed = false;
                 $hint = $hint."Фамилия должна начинаться с заглавной буквы. "
                         . "Для ввода используйте кириллицу.</br>";
             }
-            preg_match("/[А-ЯЁ][а-яё]+/", $safePost["first_name"], $matches);
+            preg_match("/^[А-ЯЁ][а-яё]+(\-[А-ЯЁ][а-яё]+)?$/u", $safePost["first_name"], $matches);
             if (!$matches){
                 $checks_passed = false;
                 $hint = $hint."Имя должно начинаться с заглавной буквы. "
                         . "Для ввода используйте кириллицу.</br>";
             }
-            preg_match("/[А-ЯЁ][а-яё]+/", $safePost["patronym"], $matches);
+            preg_match("/^[А-ЯЁ][а-яё]+$/", $safePost["patronym"], $matches);
             if ($safePost["patronym"] and (!$matches)){
                 $checks_passed = false;
                 $hint = $hint."Отчество должно начинаться с заглавной буквы. "
@@ -75,7 +93,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHPWebPage.php to 
                 $checks_passed = false;
                 $hint = $hint."Введите действительный e-mail адрес</br>";
             }
-            preg_match("/\+\d{11}/", $safePost["phone"], $matches);
+            preg_match("/^\+\d{11}$/", $safePost["phone"], $matches);
             if (!$matches){
                 $checks_passed = false;
                 $hint = $hint."Введите действительный номер телефона</br>";
@@ -88,7 +106,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHPWebPage.php to 
                 $checks_passed = false;
                 $hint = $hint."Укажите корректную дату рождения</br>";
             }
-            if (!preg_match("/[^A-Za-z]+/",$safePost["birth_place"]))
+            if (!preg_match("/^[^A-Za-z]+$/",$safePost["birth_place"]))
             {
                 $checks_passed = false;
                 $hint = $hint."Укажите место рождения на русском языке</br>";
@@ -100,7 +118,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHPWebPage.php to 
                 $checks_passed = false;
                 $hint = $hint."Если Вам не исполнилось 18 лет, "
                         . "Вы не сможете воспользоваться услугами данного "
-                        . "сервиса. Вы можете получить заграничный паспорт"
+                        . "сервиса. Вы можете получить заграничный паспорт "
                         . "лично явившись в УМВД с одним из родителей.</br>";
             }
             if (strlen($safePost["password"]) < 8) {
@@ -154,50 +172,101 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHPWebPage.php to 
         else {
             $hint = "Заполните все обязательные поля";
         }
-        
+
+        $form = new CustomForm(
+                name: 'registrationForm',
+                fields: [
+                        new CustomTextField(
+                                name: 'last_name', 
+                                label: 'auto', 
+                                verbose_name_nom: 'Фамилия', 
+                                verbose_name_acc: 'Фамилию', 
+                                required: true, 
+                                regexp: '^[А-ЯЁ](\'[А-ЯЁ])?[а-яё]+(\-[А-ЯЁ](\'[А-ЯЁ])?[а-яё]+)?$', 
+                                hint: "Фамилия должна начинаться с заглавной буквы."
+                                . " Для ввода используйте кириллицу.",
+                                maxlength: 64),
+                        new CustomTextField(
+                                name: 'first_name', 
+                                label: 'auto', 
+                                verbose_name_nom: 'Имя', 
+                                verbose_name_acc: 'Имя', 
+                                required: true, 
+                                regexp: '^[А-ЯЁ][а-яё]+(\-[А-ЯЁ][а-яё]+)?$', 
+                                hint: "Имя должно начинаться с заглавной буквы."
+                                . " Для ввода используйте кириллицу.",
+                                maxlength: 64),
+                        new CustomTextField(
+                                name: 'patronym', 
+                                label: 'auto', 
+                                verbose_name_nom: 'Отчество', 
+                                verbose_name_acc: 'Отчество', 
+                                required: false, 
+                                regexp: '^[А-ЯЁ][а-яё]+$', 
+                                hint: "Отчество должно начинаться с заглавной буквы."
+                                . " Для ввода используйте кириллицу.",
+                                maxlength: 64),
+                        new CustomEmailField(
+                                name: 'email', 
+                                label: 'auto', 
+                                verbose_name_nom: 'Адрес электронной почты', 
+                                verbose_name_acc: 'Адрес электронной почты', 
+                                required: true),
+                        new CustomTextField(
+                                name: 'phone', 
+                                label: 'auto', 
+                                verbose_name_nom: 'Номер телефона', 
+                                verbose_name_acc: 'Номер телефона', 
+                                required: true, 
+                                regexp: '^\+\d{11}$', 
+                                hint: "Номер телефона должен начинаться с + и "
+                                . "состоять из 11 цифр",
+                                maxlength: 12),
+                        new CustomDateField(
+                            name: 'birth_date',
+                            label: 'auto',
+                            verbose_name_nom: 'Дата рождения',
+                            verbose_name_acc: 'Дату рождения',
+                            required: true,
+                            before: "-P18Y",
+                            hint: "Укажите дату рождения в правильном формате. "
+                            . "Если Вам не исполнилось 18 лет, "
+                            . "Вы не сможете воспользоваться услугами данного "
+                            . "сервиса. Вы можете получить заграничный паспорт"
+                            . "лично явившись в УМВД с одним из родителей."
+                        ),
+                        new CustomTextField(
+                                name: 'birth_place', 
+                                label: 'auto', 
+                                verbose_name_nom: 'Место рождения', 
+                                verbose_name_acc: 'Место рождения', 
+                                required: true, 
+                                regexp: '^[^A-Za-z]+$', 
+                                hint: "Укажите место рождения на русском языке.",
+                                maxlength: 255),
+                        new CustomPasswordField(
+                            name: 'password', 
+                            label: 'auto', 
+                            verbose_name_nom: 'Пароль', 
+                            verbose_name_acc: 'Пароль', 
+                            required: true),
+                        new CustomPasswordField(
+                            name: 'repeat_password', 
+                            label: 'auto', 
+                            verbose_name_nom: 'Повторите пароль', 
+                            verbose_name_acc: 'Повторите пароль', 
+                            required: true),
+                    ],
+                action: "?success=true" 
+        );
         
     ?>
     <div class="central_column">
       <h1 class="central_header">Регистрация</h1>
-      <form name="register" method="POST" action="register.php">
-        <?php
-        if($hint){
-            print('<p class="form_hint">'.$hint.'</p>');
-        }
-        ?>
-        <p><input type="text" class="auth_field" required="true" maxlength="64"
-                  pattern="^[А-ЯЁ][а-яё]+$"
-                  name="last_name" placeholder="Фамилия"></p>
-        <p><input type="text" class="auth_field" required="true" maxlength="64"
-                  pattern="^[А-ЯЁ][а-яё]+$"
-                  name="first_name" placeholder="Имя"></p>
-        <p><input type="text" class="auth_field" maxlength="64"
-                  pattern="(^[А-ЯЁ][а-яё]+$|^$)"
-                  name="patronym" placeholder="Отчество (при наличии)"></p>
-        <p><input type="email" class="auth_field" required="true" maxlength="255"
-                  name="email" placeholder="Адрес электронной почты"></p>
-        <p><input type="tel" class="auth_field" required="true" maxlength="12"
-                  pattern="^\+\d{11}$"
-                  name="phone" placeholder="Номер мобильного телефона"></p>
-        <p><span class="hint_text">Пол</span></br>
-          <input type="radio" id="sex_m" name="sex" value="М">
-          <label class="hint_text" for="sex_m">М</label>
-          <input type="radio" id="sex_f" name="sex" value="Ж">
-          <label class="hint_text" for="sex_f">Ж</label></p>
-        <p><span class="hint_text">Дата рождения</span></br>
-          <input type="date" class="auth_field" required="true"
-                  name="birth_date" placeholder="Дата рождения"></p>
-        <p><input type="text" class="auth_field" required="true" maxlength="255"
-                  name="birth_place" placeholder="Место рождения (как в паспорте)"></p>
-        
-        <p><input type="password" class="auth_field" required="true"
-                  name="password" placeholder="Пароль"></p>
-        <p><input type="password" class="auth_field" required="true"
-                  name="repeat_password" placeholder="Подтвердите пароль"></p>
-        <p>
-          <input type="submit" name="send" class="btn btn-primary" value="Зарегистрироваться">
-        </p>
-      </form>
+      <?php 
+        echo $form->render();
+      ?>
     </div>
+    <script type="text/javascript" src="../validateForm.js"></script> 
   </body>
 </html>

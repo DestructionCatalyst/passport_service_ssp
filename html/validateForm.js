@@ -10,6 +10,7 @@ function getattr(element, attrName){
 $(document).ready(function() {
     let textFields = $("input[type='text']");
     let dateFields = $("input[type='date']");
+    let passwordFields = $("input[type='password']");
     
 
     $('form').submit(function() {
@@ -17,18 +18,20 @@ $(document).ready(function() {
         let alertText = '';
         
         textFields.each(function(){
-            let value = $(this).val();
+            let value = $(this).val(); 
             if ((getattr($(this), 'required')) && (value === '')){
                 alertText = 'Заполните все обязательные поля!</br>'; 
                 validationPass = false;
             }
             else {
-                let re = getattr($(this), 'regexp');
-                if (re){
-                    let regexp = new RegExp(re);
-                    if (!(regexp.test(value))){
-                        alertText += $(this).attr('hint') + '</br>'; 
-                        validationPass = false;
+                if ((getattr($(this), 'required'))){
+                    let re = getattr($(this), 'regexp');
+                    if (re){
+                        let regexp = new RegExp(re);
+                        if (!(regexp.test(value))){
+                            alertText += $(this).attr('hint') + '</br>'; 
+                            validationPass = false;
+                        }
                     }
                 }
             }
@@ -61,6 +64,42 @@ $(document).ready(function() {
                     }
                 }
             }
+        });
+        
+        password = null;
+        passwordFields.each(function(){
+            insertedPassword = $(this).val();
+            
+            if(password === null){
+                password = insertedPassword;
+                
+                if (insertedPassword.length < 8){
+                alertText += "Пароль должен содержать минимум 8 символов.</br>";
+                validationPass = false;   
+                }
+                if (!insertedPassword.match(/[0-9]/)){
+                    alertText += "Пароль должен содержать хотя бы 1 цифру</br>";
+                    validationPass = false;   
+                }
+                if (!insertedPassword.match(/[A-ZА-ЯЁ]/)){
+                    alertText += "Пароль должен содержать хотя бы одну заглавную букву</br>";
+                    validationPass = false;   
+                }
+                if (!insertedPassword.match(/[a-zа-яё]/)){
+                    alertText += "Пароль должен содержать хотя бы одну строчную букву</br>";
+                    validationPass = false;   
+                }
+                if (!insertedPassword.match(/[^A-ZА-ЯЁa-zа-яё0-9]/)){
+                    alertText += "Пароль должен содержать хотя бы один специальный символ</br>";
+                    validationPass = false;   
+                }
+                
+            }
+            else if(password !== insertedPassword){
+                alertText += "Введенные пароли не совпадают</br>";
+                validationPass = false;
+            }
+            
         });
         
         //alert(validationPass);

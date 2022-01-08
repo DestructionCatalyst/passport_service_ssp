@@ -52,7 +52,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHPWebPage.php to 
             return null;
         }
         
-        function loadFirstForm() {
+        function preloadData(){
             let draft = getCookie('draft');
             if (draft !== null){
                 collectedData = JSON.parse(draft);
@@ -60,6 +60,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHPWebPage.php to 
             else {
                 loadWorkplaces();
             }
+        }
+        
+        function loadFirstForm() {
             $('#form_container').html(firstStepForm);
             $('.d-flex.form-row').prepend($('<div class="m-2">').append(
                     $('<button id="back" class="btn btn-danger">').append("Назад <")
@@ -70,6 +73,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHPWebPage.php to 
                     obj = $("#applicationForm").serializeArray().reduce(
                         function(m,v){m[v.name] = v.value;return m;}, {});
                     collectedData['reason_and_limitations'] = obj;
+                    console.log(collectedData);
                     document.cookie = "draft=" + 
                             encodeURIComponent(JSON.stringify(collectedData)) +
                             "; max-age=600; samesite=strict;";
@@ -111,7 +115,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHPWebPage.php to 
         function saveFormData(){
             obj = $('#workPlaceForm').serializeArray().reduce(
                         function(m,v){m[v.name] = v.value;return m;}, {});
-            collectedData.workplaces[curStep] = obj;       
+            collectedData.workplaces[curStep] = obj;    
+            console.log(obj, curStep, collectedData);
             $('#workPlaceForm')[0].reset();
         }
         
@@ -210,7 +215,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHPWebPage.php to 
         }
         
     $(document).ready(function() {
-
+        
+        preloadData();
         loadFirstForm();
 
     });

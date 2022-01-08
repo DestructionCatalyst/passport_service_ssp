@@ -561,7 +561,7 @@ class CustomPasswordField extends CustomField {
             $verbose_name_acc,
             $required = false,
             $value = '',
-            $hint = "Введите корректный адрес электронной почты",
+            $hint = "Введите корректный пароль",
             $custom_validation = null,
             $class = 'form-control') {
         parent::__construct($name, $label,

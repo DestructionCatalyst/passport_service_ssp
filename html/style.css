@@ -75,6 +75,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
     padding: 2px;
 }
 
+.no-markers {
+    list-style-type: none;
+}
+
 .заполнено {
     color: #212529;
 }

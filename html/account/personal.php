@@ -77,7 +77,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHPWebPage.php to 
                                 verbose_name_nom: 'Фамилия', 
                                 verbose_name_acc: 'Фамилию', 
                                 required: true, 
-                                regexp: '^[А-ЯЁ][а-яё]+$', 
+                                regexp: '^[А-ЯЁ][а-яё\']+[а-яё]([\-\'][А-ЯЁ][а-яё\']+[а-яё])?$', 
                                 hint: "Фамилия должна начинаться с заглавной буквы."
                                 . " Для ввода используйте кириллицу.",
                                 maxlength: 64),
@@ -87,7 +87,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHPWebPage.php to 
                                 verbose_name_nom: 'Имя', 
                                 verbose_name_acc: 'Имя', 
                                 required: true, 
-                                regexp: '^[А-ЯЁ][а-яё]+$', 
+                                regexp: '^[А-ЯЁ][а-яё]+(\-[А-ЯЁ][а-яё]+)?$', 
                                 hint: "Имя должно начинаться с заглавной буквы."
                                 . " Для ввода используйте кириллицу.",
                                 maxlength: 64),

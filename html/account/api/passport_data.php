@@ -20,7 +20,7 @@ class PassportApiController extends ApiController{
     
     public function onPost() {
         $db = new MySQLDB("/usr/local/etc/db_config");
-        
+        include '../forms.php';
         if ($passportForm->validate()){
             // Save to DB
             $db = new MySQLDB("/usr/local/etc/db_config");
